@@ -1,0 +1,12 @@
+#!/usr/bin/ruby
+
+file = ARGV[0]
+app_token = ENV['slack_app_token']
+
+def upload_slack(service_url, token, channels, file)
+  cmd = "curl -F file='@#{file}' -F channels=#{channels} -F token=#{token} #{service_url}"
+  system(cmd)
+end
+
+upload_slack('https://slack.com/api/files.upload', app_token, '#general', file)
+

@@ -1,0 +1,29 @@
+#!/usr/bin/ruby
+
+require 'json'
+
+event = ARGV[0]
+channel = 'general'
+message = ARGV[1]
+web_hook_url = ENV['slack_hook_url']
+
+def notify_slack(webhook_url, channel, username, text, image)
+  payload = {
+    :channel  => channel,
+    :username => username,
+    :text     => text,
+    :icon_url => image
+  }.to_json
+  cmd = "curl -X POST --data-urlencode 'payload=#{payload}' #{webhook_url}"
+  system(cmd)
+end
+
+
+notify_slack(
+  "#{web_hook_url}",
+  "#{channel}",
+  "#{event}",
+  "#{message}",
+  'https://www.asterisk.org/sites/asterisk/files/asterisk-speech-bubble-trademark.png'
+)
+
